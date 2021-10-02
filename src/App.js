@@ -55,6 +55,7 @@ const StyledSection = styled.section`
 export default function App() {
   const [favColor, setFavColor] = React.useState("");
   const [waves, setWaves] = React.useState([]);
+  const [waveLoading, setWaveLoading] = React.useState(false);
   const [totalWaves, setTotalWaves] = React.useState(0);
   const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
   const { waveportalContract } = useContract(contractAddress, waveportal.abi);
@@ -189,6 +190,7 @@ export default function App() {
 
       if (ethereum) {
         let count = await waveportalContract.getTotalWaves();
+        setWaveLoading(true);
         const waveTxn = await waveportalContract.wave(favColor, {
           gasLimit: 300000,
         });
@@ -201,6 +203,7 @@ export default function App() {
         let allWaves = await waveportalContract.getAllWaves();
         await cleanWaves(allWaves);
         setFavColor("");
+        setWaveLoading(false);
       } else {
         console.log("Ethereum object doesn't exist!");
       }
@@ -269,7 +272,7 @@ export default function App() {
               type="submit"
               className="mx-auto block bg-purple-50 p-2 rounded-md shadow"
             >
-              Wave at Me
+              {waveLoading ? "Loading..." : "Wave at Me"}
             </button>
           </form>
           <div className="my-4">
