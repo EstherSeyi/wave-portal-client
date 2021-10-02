@@ -218,7 +218,7 @@ export default function App() {
   }, []);
   React.useEffect(() => {
     checkIfWalletIsConnected();
-  }, []);
+  }, [currentAccount]);
 
   const handleInputChange = ({ target }) => {
     setFavColor(target.value);
